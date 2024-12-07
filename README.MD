@@ -16,3 +16,4 @@ You could find more information about challenge on the official [site](https://a
 |3|[Mull It Over](https://adventofcode.com/2024/day/3)| [Solution for Day 3](./src/main/java/ru/riverx/Day3.java) |
 |4|[Ceres Search](https://adventofcode.com/2024/day/4)| [Solution for Day 4](./src/main/java/ru/riverx/Day4.java) |
 |5|[Print Queue](https://adventofcode.com/2024/day/5)| [Solution for Day 5](./src/main/java/ru/riverx/Day5.java) |
+|6|[Guard Gallivant](https://adventofcode.com/2024/day/6)| [Solution for Day 6](./src/main/java/ru/riverx/Day6.java) |
