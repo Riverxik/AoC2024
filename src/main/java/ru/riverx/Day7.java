@@ -15,7 +15,7 @@ public class Day7 {
                 String[] split = line.split(": ");
                 long value = Long.parseLong(split[0]);
 
-                String[] operandsStrings = split[1].split(" ");
+                String[] operandsStrings = split[1].trim().split("\\s+");
                 long[] operands = new long[operandsStrings.length];
                 for (int i = 0; i < operands.length; i++) {
                     operands[i] = Long.parseLong(operandsStrings[i]);
@@ -37,6 +37,7 @@ public class Day7 {
 
         return isEval(value, operands, acc + operands[index], index + 1)
                 || isEval(value, operands, acc * operands[index], index + 1)
+                // Remove next line for part 1
                 || isEval(value, operands, Long.parseLong(String.valueOf(acc) + operands[index]), index + 1);
     }
 }
