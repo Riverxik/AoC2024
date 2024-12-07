@@ -12,6 +12,13 @@ public class Day6 {
     public static final int MAX_STEP = 10000;
     public static final String UNEXPECTED_VALUE = "Unexpected value: ";
 
+    private static final int[][] directionsDeltas = {
+            {0, -1},    // UP
+            {1, 0},     // RIGHT
+            {0, 1},     // DOWN
+            {-1, 0},    // LEFT
+    };
+
     public static void day6() throws IOException {
         Map<String, Boolean> mapRes = new HashMap<>();
         int mapSize = 0;
@@ -94,67 +101,30 @@ public class Day6 {
     private static boolean doPuzzle(int[] playerPos, int mapSize, Direction direction, Map<String, Boolean> map, Map<String, Boolean> mapRes) {
         int step = 0;
         StringBuilder keyBuilder = new StringBuilder(10);
+
         while (playerPos[0] >= 0 && playerPos[0] < mapSize - 1 && playerPos[1] >= 0 && playerPos[1] < mapSize - 1 && step < MAX_STEP) {
             keyBuilder.setLength(0);
 
-            boolean isMoved = false;
-            switch (direction) {
-                case LEFT: {
-                    keyBuilder.append(playerPos[0] - 1).append(",").append(playerPos[1]);
-                    if (map.get(keyBuilder.toString()) != null) {
-                        direction = Direction.UP;
-                    } else {
-                        playerPos[0]--;
-                        isMoved = true;
-                    }
-                    break;
-                }
-                case RIGHT: {
-                    keyBuilder.append(playerPos[0] + 1).append(",").append(playerPos[1]);
-                    if (map.get(keyBuilder.toString()) != null) {
-                        direction = Direction.DOWN;
-                    } else {
-                        playerPos[0]++;
-                        isMoved = true;
-                    }
-                    break;
-                }
-                case UP: {
-                    keyBuilder.append(playerPos[0]).append(",").append(playerPos[1] - 1);
-                    if (map.get(keyBuilder.toString()) != null) {
-                        direction = Direction.RIGHT;
-                    } else {
-                        playerPos[1]--;
-                        isMoved = true;
-                    }
-                    break;
-                }
-                case DOWN: {
-                    keyBuilder.append(playerPos[0]).append(",").append(playerPos[1] + 1);
-                    if (map.get(keyBuilder.toString()) != null) {
-                        direction = Direction.LEFT;
-                    } else {
-                        playerPos[1]++;
-                        isMoved = true;
-                    }
-                    break;
-                }
-                default: {
-                    throw new IllegalStateException(UNEXPECTED_VALUE + direction);
-                }
-            }
-            if (isMoved) {
+            int deltaX = directionsDeltas[direction.ordinal()][0];
+            int deltaY = directionsDeltas[direction.ordinal()][1];
+
+            String key = keyBuilder.append(playerPos[0] + deltaX).append(",").append(playerPos[1] + deltaY).toString();
+            if (map.get(key) != null) {
+                direction = Direction.values()[(direction.ordinal() + 1) % 4];
+            } else {
+                playerPos[0] += deltaX;
+                playerPos[1] += deltaY;
                 step++;
-                mapRes.put(keyBuilder.toString(), true);
+                mapRes.put(key, true);
             }
         }
         return step == MAX_STEP;
     }
 
     enum Direction {
-        LEFT,
-        RIGHT,
         UP,
-        DOWN
+        RIGHT,
+        DOWN,
+        LEFT
     }
 }
