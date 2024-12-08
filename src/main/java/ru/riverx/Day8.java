@@ -65,10 +65,6 @@ public class Day8 {
 
         int listSize = pointList.size();
 
-        if (listSize < 2) {
-            return; // Early return if there are less than 2 points
-        }
-
         for (int i = 0; i < listSize; i++) {
             Coordinate p1 = pointList.get(i);
             for (int j = 0; j < listSize; j++) {
