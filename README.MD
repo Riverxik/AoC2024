@@ -18,3 +18,4 @@ You could find more information about challenge on the official [site](https://a
 |5|[Print Queue](https://adventofcode.com/2024/day/5)| [Solution for Day 5](./src/main/java/ru/riverx/Day5.java) |
 |6|[Guard Gallivant](https://adventofcode.com/2024/day/6)| [Solution for Day 6](./src/main/java/ru/riverx/Day6.java) |
 |7|[Bridge Repair](https://adventofcode.com/2024/day/7)| [Solution for Day 7](./src/main/java/ru/riverx/Day7.java) |
+|8|[Resonant Collinearity](https://adventofcode.com/2024/day/8)| [Solution for Day 8](./src/main/java/ru/riverx/Day8.java) |
