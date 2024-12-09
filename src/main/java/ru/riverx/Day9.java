@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Day9 {
 
@@ -23,10 +23,13 @@ public class Day9 {
 
         processInput(line, files);
 
-        defrag(files);
+        // Part 1
+//        defrag(files);
+//        System.out.println(getCheckSum(files));
 
-        long checkSum = getCheckSum(files);
-        System.out.println(checkSum);
+        // Part 2
+        defrag2(files);
+        System.out.println(getCheckSumExtra(files));
     }
 
     private static void processInput(String line, List<Integer> files) {
@@ -78,6 +81,54 @@ public class Day9 {
         printFiles(files, "Step 2: ");
     }
 
+    private static void defrag2(List<Integer> files) {
+        Map<Integer, Long> mapNumSize = files.stream().collect(Collectors.groupingBy(Integer::intValue, Collectors.counting()));
+        List<Integer> uniqueFileList = mapNumSize.keySet().stream().sorted(Collections.reverseOrder()).toList();
+
+        for (int num : uniqueFileList) {
+            if (num == -1) break;
+            int pos = files.indexOf(num);
+            int len = Math.toIntExact(mapNumSize.get(num));
+
+            // get free position available for this file
+            int freePos = getFreePosForSize(files, len, pos);
+            if (freePos == -1) { continue; }
+
+            // if pos != null then swap
+            for (int i = freePos; i < freePos + len; i++) {
+                files.set(i, num);
+            }
+            for (int i = pos; i < pos + len; i++) {
+                files.set(i, -1);
+            }
+        }
+
+        printFiles(files, "Step 2: ");
+    }
+
+    private static int getFreePosForSize(List<Integer> files, int len, int right) {
+        int pos = files.indexOf(-1);
+        int i = pos;
+        int end = right;
+        boolean isFound = false;
+        while (i < end) {
+            while (i < end) {
+                if (files.get(i) != -1) {
+                    break;
+                }
+                i++;
+            }
+            if (i - pos >= len) {
+                isFound = true;
+                break; // found
+            }
+            i++;
+            pos = i;
+        }
+
+        return isFound ? pos : -1;
+    }
+
     private static long getCheckSum(List<Integer> files) {
         long checkSum = 0;
         for (int i = 0; i < files.size(); i++) {
@@ -87,6 +138,18 @@ public class Day9 {
             }
             checkSum += num * i;
         }
+        return checkSum;
+    }
+
+    private static long getCheckSumExtra(List<Integer> files) {
+        long checkSum = 0;
+
+        for (int i = 0; i < files.size(); i++) {
+            long num = files.get(i);
+            if (num == -1) {continue;}
+            checkSum += num * i;
+        }
+
         return checkSum;
     }
 }
