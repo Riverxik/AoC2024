@@ -42,11 +42,12 @@ public class Day10 {
 
     private static int checkNeighbors(List<Point> pointList, Point start) {
         if (start.value == 9) {
-            if (!finalPointList.contains(start)) {
-                finalPointList.add(start);
-                return 1;
-            }
-            return 0;
+            // Uncomment for part 1
+//            if (!finalPointList.contains(start)) {
+//                finalPointList.add(start);
+//                return 1;
+//            }
+            return 1; // Change to return 0 for part 1
         }
         int res = 0;
         int x = start.x;
