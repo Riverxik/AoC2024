@@ -2,11 +2,11 @@ package ru.riverx;
 
 import java.io.IOException;
 
-import static ru.riverx.Day10.day10;
+import static ru.riverx.Day11.day11;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        day10();
+        day11();
     }
 }
