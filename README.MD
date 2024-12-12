@@ -21,3 +21,4 @@ You could find more information about challenge on the official [site](https://a
 | 8   | [Resonant Collinearity](https://adventofcode.com/2024/day/8) | [Solution for Day 8](./src/main/java/ru/riverx/Day8.java) |
 | 9   | [Disk Fragmenter](https://adventofcode.com/2024/day/9) | [Solution for Day 9](./src/main/java/ru/riverx/Day9.java) |
 | 10  | [Hoof It](https://adventofcode.com/2024/day/10) | [Solution for Day 10](./src/main/java/ru/riverx/Day10.java) |
+| 11  | [Plutonian Pebbles](https://adventofcode.com/2024/day/11) | [Solution for Day 11](./src/main/java/ru/riverx/Day11.java) |
