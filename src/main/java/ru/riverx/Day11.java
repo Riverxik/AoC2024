@@ -2,11 +2,10 @@ package ru.riverx;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Day11 {
 
@@ -20,53 +19,63 @@ public class Day11 {
     }
 
     private static void processLine(String line) {
-        List<Long> numbers = new ArrayList<>(Arrays.stream(line.split("\\s+")).map(Long::parseLong).toList());
-        List<Long> next = new ArrayList<>();
-        int blinkCount = 0;
-        int size;
-        while (blinkCount < 25) {
-            for (long n : numbers) {
-                if (n == 0) {
-                    next.add(1L);
-                } else if ((size = getSizeFromNum(n)) % 2 == 0) {
-                    next.add(getRoundLeftFromNum(n, size / 2));
-                    next.add(getRoundRightFromNum(n, size / 2));
-                } else {
-                    next.add(n * 2024);
-                }
+        List<Long> numbers = new LinkedList<>(Arrays.stream(line.split("\\s+")).map(Long::parseLong).toList());
+        blinkStoneTimes(numbers, 75);
+    }
+
+    private static void blinkStoneTimes(List<Long> stones, int steps) {
+        Map<Long, BigInteger> stoneCounts = new HashMap<>();
+
+        for (Long stone : stones) {
+            stoneCounts.put(stone, stoneCounts.getOrDefault(stone, BigInteger.ZERO).add(BigInteger.ONE));
+        }
+
+        for (int step = 0; step < steps; step++) {
+            Map<Long, BigInteger> newStoneCounts = new HashMap<>();
+
+            for (Map.Entry<Long, BigInteger> entry : stoneCounts.entrySet()) {
+                long stone = entry.getKey();
+                BigInteger count = entry.getValue();
+
+                processStone(stone, count, newStoneCounts);
             }
 
-            numbers.clear();
-            numbers.addAll(next);
-            next.clear();
-            blinkCount++;
+            stoneCounts = newStoneCounts;
         }
 
-        System.out.println(numbers.size());
+        BigInteger result = BigInteger.ZERO;
+        for (Map.Entry<Long, BigInteger> entry : stoneCounts.entrySet()) {
+            BigInteger count = entry.getValue();
+            result = result.add(count);
+        }
+        System.out.println("Result: " + result);
     }
 
-    private static long getRoundLeftFromNum(Long num, int size) {
-        for (int i = 0; i < size; i++) {
-            num /= 10;
-        }
-        return num;
-    }
+    private static void processStone(long stone, BigInteger count, Map<Long, BigInteger> newStoneCounts) {
+        String strStone = Long.toString(stone);
 
-    private static long getRoundRightFromNum(Long num, int size) {
-        long res = 0;
-        for (int i = 0; i < size; i++) {
-            res += num % 10 * Math.pow(10, i);
-            num /= 10;
+        if (stone == 0) {
+            newStoneCounts.put(1L, newStoneCounts.getOrDefault(1L, BigInteger.ZERO).add(count));
+            return;
         }
-        return res;
-    }
 
-    private static int getSizeFromNum(Long num) {
-        int size = 0;
-        while (num > 0) {
-            size++;
-            num /= 10;
+        if (strStone.length() % 2 == 0) {
+            int mid = strStone.length() / 2;
+            String leftPart = strStone.substring(0, mid);
+            String rightPart = strStone.substring(mid);
+
+            if (!leftPart.isEmpty()) {
+                long leftStone = Long.parseLong(leftPart);
+                newStoneCounts.put(leftStone, newStoneCounts.getOrDefault(leftStone, BigInteger.ZERO).add(count));
+            }
+            if (!rightPart.isEmpty()) {
+                long rightStone = Long.parseLong(rightPart);
+                newStoneCounts.put(rightStone, newStoneCounts.getOrDefault(rightStone, BigInteger.ZERO).add(count));
+            }
+            return;
         }
-        return size;
+
+        long newStone = stone * 2024;
+        newStoneCounts.put(newStone, newStoneCounts.getOrDefault(newStone, BigInteger.ZERO).add(count));
     }
 }
